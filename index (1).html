@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 Phòng Khám Thú Y - Đăng Ký Khám</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe8ed 50%, #ffd6e0 100%);
+            min-height: 100vh;
+        }
+
+        /* Running animals animation - ALL moving forward (left to right) */
+        .running-dog {
+            position: fixed;
+            bottom: 25px;
+            font-size: 55px;
+            animation: runForward 14s linear infinite;
+            z-index: 100;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .running-cat {
+            position: fixed;
+            bottom: 90px;
+            font-size: 50px;
+            animation: runForward 18s linear infinite;
+            animation-delay: 2s;
+            z-index: 100;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .running-rabbit {
+            position: fixed;
+            bottom: 55px;
+            font-size: 45px;
+            animation: runForward 12s linear infinite;
+            animation-delay: 5s;
+            z-index: 100;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .running-hamster {
+            position: fixed;
+            bottom: 120px;
+            font-size: 40px;
+            animation: runForward 16s linear infinite;
+            animation-delay: 8s;
+            z-index: 100;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .running-turtle {
+            position: fixed;
+            bottom: 30px;
+            font-size: 42px;
+            animation: runForward 25s linear infinite;
+            animation-delay: 4s;
+            z-index: 100;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        @keyframes runForward {
+            0% { 
+                left: -80px; 
+            }
+            100% { 
+                left: 100%; 
+            }
+        }
+
+        /* Floating animals */
+        .floating-animal {
+            position: fixed;
+            font-size: 28px;
+            opacity: 0.5;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        /* Paw prints background */
+        .paw-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.08;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ctext x='10' y='40' font-size='30'%3E🐾%3C/text%3E%3C/svg%3E");
+        }
+
+        /* Form styling */
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 182, 193, 0.35);
+        }
+
+        .input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #ffb6c1;
+        }
+
+        .input-field:focus {
+            border-color: #ff69b4;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.25);
+            transform: scale(1.02);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #ff69b4, #ff85c1, #ffa6c9);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
+        }
+
+        .pet-icon {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Success modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Records table */
+        .records-table {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+        }
+
+        .table-row:hover {
+            background: #fff0f5;
+        }
+
+        /* Cute decorations */
+        .heart {
+            color: #ff69b4;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Section card styling */
+        .info-card {
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.2);
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+    <!-- Paw prints background -->
+    <div class="paw-bg"></div>
+
+    <!-- Running animals - All moving forward -->
+    <div class="running-dog">🐕</div>
+    <div class="running-cat">🐈</div>
+    <div class="running-rabbit">🐇</div>
+    <div class="running-hamster">🐹</div>
+    <div class="running-turtle">🐢</div>
+
+    <!-- Floating animals decoration -->
+    <div class="floating-animal" style="top: 8%; left: 5%;">🐶</div>
+    <div class="floating-animal" style="top: 15%; right: 6%; animation-delay: 1s;">🐱</div>
+    <div class="floating-animal" style="top: 35%; left: 4%; animation-delay: 2s;">🐰</div>
+    <div class="floating-animal" style="top: 55%; right: 4%; animation-delay: 3s;">🐹</div>
+    <div class="floating-animal" style="top: 70%; left: 6%; animation-delay: 4s;">🐢</div>
+    <div class="floating-animal" style="top: 85%; right: 8%; animation-delay: 5s;">🐾</div>
+
+    <!-- Header -->
+    <header class="relative z-10 py-6">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex items-center justify-center gap-4">
+                <span class="text-5xl pet-icon">🏥</span>
+                <div class="text-center">
+                    <h1 class="text-3xl md:text-4xl font-bold text-pink-600">
+                        Phòng Khám Thú Y
+                        <span class="heart">♥</span>
+                    </h1>
+                    <p class="text-pink-400 text-lg">Yêu thương - Tận tâm - Chuyên nghiệp</p>
+                </div>
+                <span class="text-5xl pet-icon" style="animation-delay: 0.5s;">🐾</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="relative z-10 mb-8">
+        <div class="max-w-6xl mx-auto px-4 flex justify-center gap-4">
+            <button onclick="showSection('form')" id="btn-form" class="px-6 py-3 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 transition-all shadow-lg">
+                📝 Đăng Ký Khám
+            </button>
+            <button onclick="showSection('records')" id="btn-records" class="px-6 py-3 bg-white text-pink-500 rounded-full font-semibold hover:bg-pink-100 transition-all shadow-lg border-2 border-pink-300">
+                📋 Danh Sách Khách Hàng
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Form Section -->
+    <main class="relative z-10 max-w-4xl mx-auto px-4 pb-32">
+        <!-- Registration Form -->
+        <section id="form-section" class="form-container p-8 md:p-10">
+            <div class="text-center mb-8">
+                <div class="flex justify-center gap-3 text-4xl mb-4">
+                    <span class="pet-icon">🐶</span>
+                    <span class="pet-icon" style="animation-delay: 0.2s;">🐱</span>
+                    <span class="pet-icon" style="animation-delay: 0.4s;">🐹</span>
+                    <span class="pet-icon" style="animation-delay: 0.6s;">🐰</span>
+                    <span class="pet-icon" style="animation-delay: 0.8s;">🐢</span>
+                </div>
+                <h2 class="text-2xl font-bold text-pink-600 mb-2">Đăng Ký Thông Tin Khám Bệnh</h2>
+                <p class="text-pink-400">Vui lòng điền đầy đủ thông tin bên dưới 🌸</p>
+            </div>
+
+            <form id="petForm" class="space-y-6">
+                <!-- Owner Info -->
+                <div class="info-card bg-pink-50 rounded-2xl p-6 border-2 border-pink-200">
+                    <h3 class="text-lg font-bold text-pink-600 mb-4 flex items-center gap-2">
+                        <span>👤</span> Thông Tin Khách Hàng (Chủ Nuôi)
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-pink-600 font-semibold mb-2">Họ và tên chủ nuôi <span class="text-red-500">*</span></label>
+                            <input type="text" id="ownerName" required placeholder="Nhập họ tên..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-pink-600 font-semibold mb-2">Số điện thoại <span class="text-red-500">*</span></label>
+                            <input type="tel" id="ownerPhone" required placeholder="Nhập số điện thoại..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-pink-600 font-semibold mb-2">Địa chỉ</label>
+                            <input type="text" id="ownerAddress" placeholder="Nhập địa chỉ..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-pink-600 font-semibold mb-2">Email</label>
+                            <input type="email" id="ownerEmail" placeholder="Nhập email..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-pink-600 font-semibold mb-2">Ghi chú khách hàng</label>
+                            <input type="text" id="ownerNote" placeholder="Ghi chú thêm..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pet Info -->
+                <div class="info-card bg-purple-50 rounded-2xl p-6 border-2 border-purple-200">
+                    <h3 class="text-lg font-bold text-purple-600 mb-4 flex items-center gap-2">
+                        <span>🐾</span> Thông Tin Thú Cưng
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Tên thú cưng <span class="text-red-500">*</span></label>
+                            <input type="text" id="petName" required placeholder="Nhập tên thú cưng..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Chủng loại <span class="text-red-500">*</span></label>
+                            <select id="petType" required class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                                <option value="">-- Chọn chủng loại --</option>
+                                <option value="dog">🐕 Chó</option>
+                                <option value="cat">🐱 Mèo</option>
+                                <option value="hamster">🐹 Hamster</option>
+                                <option value="rabbit">🐰 Thỏ</option>
+                                <option value="turtle">🐢 Rùa</option>
+                                <option value="other">🐾 Khác</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Giống/Loài</label>
+                            <input type="text" id="petBreed" placeholder="VD: Poodle, Mèo Anh, Hamster Winter White..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Giới tính <span class="text-red-500">*</span></label>
+                            <select id="petGender" required class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="male">♂️ Đực</option>
+                                <option value="female">♀️ Cái</option>
+                                <option value="unknown">❓ Không rõ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Khối lượng (kg) <span class="text-red-500">*</span></label>
+                            <input type="number" id="petWeight" required step="0.01" min="0" placeholder="VD: 5.5"
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Chiều cao (cm) <span class="text-red-500">*</span></label>
+                            <input type="number" id="petHeight" required step="0.1" min="0" placeholder="VD: 30"
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Tuổi</label>
+                            <input type="text" id="petAge" placeholder="VD: 2 tuổi, 6 tháng..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-purple-600 font-semibold mb-2">Màu lông/da</label>
+                            <input type="text" id="petColor" placeholder="VD: Trắng, Nâu đen..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Info -->
+                <div class="info-card bg-rose-50 rounded-2xl p-6 border-2 border-rose-200">
+                    <h3 class="text-lg font-bold text-rose-600 mb-4 flex items-center gap-2">
+                        <span>💊</span> Tình Trạng Sức Khỏe
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-rose-600 font-semibold mb-2">Tình trạng sức khỏe hiện tại <span class="text-red-500">*</span></label>
+                            <select id="healthStatus" required class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white">
+                                <option value="">-- Chọn tình trạng --</option>
+                                <option value="normal">🟢 Bình thường - Khám định kỳ</option>
+                                <option value="mild">🟡 Nhẹ - Có triệu chứng nhẹ</option>
+                                <option value="moderate">🟠 Trung bình - Cần điều trị</option>
+                                <option value="severe">🔴 Nặng - Cần cấp cứu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-rose-600 font-semibold mb-2">Triệu chứng <span class="text-red-500">*</span></label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Sốt" class="accent-pink-500 w-4 h-4">
+                                    <span>🌡️ Sốt</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Nôn mửa" class="accent-pink-500 w-4 h-4">
+                                    <span>🤢 Nôn mửa</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Tiêu chảy" class="accent-pink-500 w-4 h-4">
+                                    <span>💩 Tiêu chảy</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Bỏ ăn" class="accent-pink-500 w-4 h-4">
+                                    <span>🍽️ Bỏ ăn</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Mệt mỏi" class="accent-pink-500 w-4 h-4">
+                                    <span>😴 Mệt mỏi</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Ho" class="accent-pink-500 w-4 h-4">
+                                    <span>🤧 Ho</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Ngứa/Gãi" class="accent-pink-500 w-4 h-4">
+                                    <span>🐾 Ngứa/Gãi</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Rụng lông" class="accent-pink-500 w-4 h-4">
+                                    <span>🧶 Rụng lông</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-3 rounded-xl border-2 border-pink-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all">
+                                    <input type="checkbox" name="symptoms" value="Khám định kỳ" class="accent-pink-500 w-4 h-4">
+                                    <span>✅ Khám định kỳ</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-rose-600 font-semibold mb-2">Mô tả chi tiết triệu chứng</label>
+                            <textarea id="symptomsDetail" rows="3" placeholder="Mô tả thêm về tình trạng của thú cưng..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-rose-600 font-semibold mb-2">Tiền sử bệnh (nếu có)</label>
+                            <textarea id="medicalHistory" rows="2" placeholder="Các bệnh đã từng mắc, thuốc đang dùng..."
+                                class="input-field w-full px-4 py-3 rounded-xl outline-none bg-white resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center pt-4">
+                    <button type="submit" class="submit-btn px-12 py-4 text-white text-xl font-bold rounded-full shadow-xl">
+                        🐾 Đăng Ký Khám Bệnh 🐾
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Records Section -->
+        <section id="records-section" class="hidden">
+            <div class="records-table p-6 md:p-8 shadow-xl">
+                <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <h2 class="text-2xl font-bold text-pink-600 flex items-center gap-2">
+                        <span>📋</span> Danh Sách Khách Hàng
+                    </h2>
+                    <div class="flex gap-3">
+                        <span id="recordCount" class="bg-pink-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                            0 khách hàng
+                        </span>
+                        <button onclick="clearAllRecords()" class="bg-red-100 text-red-600 px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-200 transition-all">
+                            🗑️ Xóa tất cả
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="recordsList" class="space-y-4">
+                    <div class="text-center py-12 text-pink-400">
+                        <span class="text-6xl block mb-4">🐾</span>
+                        <p>Chưa có khách hàng nào được đăng ký</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content max-w-md mx-4">
+            <div class="text-6xl mb-4">🎉</div>
+            <h3 class="text-2xl font-bold text-pink-600 mb-2">Đăng Ký Thành Công!</h3>
+            <p class="text-pink-400 mb-6">Cảm ơn bạn đã tin tưởng phòng khám của chúng tôi</p>
+            <div class="flex justify-center gap-3 text-4xl mb-6">
+                <span class="pet-icon">🐶</span>
+                <span class="heart">❤️</span>
+                <span class="pet-icon" style="animation-delay: 0.3s;">🐱</span>
+            </div>
+            <button onclick="closeModal()" class="submit-btn px-8 py-3 text-white font-bold rounded-full">
+                Đóng
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm py-3 z-50 border-t border-pink-200">
+        <div class="text-center text-pink-500">
+            <p class="flex items-center justify-center gap-2 flex-wrap">
+                Made with <span class="heart">❤️</span> by Phòng Khám Thú Y
+                <span>🐕</span><span>🐱</span><span>🐹</span><span>🐰</span><span>🐢</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Store records in localStorage
+        let records = JSON.parse(localStorage.getItem('petRecords')) || [];
+
+        // Show section
+        function showSection(section) {
+            const formSection = document.getElementById('form-section');
+            const recordsSection = document.getElementById('records-section');
+            const btnForm = document.getElementById('btn-form');
+            const btnRecords = document.getElementById('btn-records');
+
+            if (section === 'form') {
+                formSection.classList.remove('hidden');
+                recordsSection.classList.add('hidden');
+                btnForm.classList.add('bg-pink-500', 'text-white');
+                btnForm.classList.remove('bg-white', 'text-pink-500');
+                btnRecords.classList.remove('bg-pink-500', 'text-white');
+                btnRecords.classList.add('bg-white', 'text-pink-500');
+            } else {
+                formSection.classList.add('hidden');
+                recordsSection.classList.remove('hidden');
+                btnRecords.classList.add('bg-pink-500', 'text-white');
+                btnRecords.classList.remove('bg-white', 'text-pink-500');
+                btnForm.classList.remove('bg-pink-500', 'text-white');
+                btnForm.classList.add('bg-white', 'text-pink-500');
+                displayRecords();
+            }
+        }
+
+        // Get pet type emoji
+        function getPetEmoji(type) {
+            const emojis = {
+                'dog': '🐕',
+                'cat': '🐱',
+                'hamster': '🐹',
+                'rabbit': '🐰',
+                'turtle': '🐢',
+                'other': '🐾'
+            };
+            return emojis[type] || '🐾';
+        }
+
+        // Get pet type name
+        function getPetTypeName(type) {
+            const names = {
+                'dog': 'Chó',
+                'cat': 'Mèo',
+                'hamster': 'Hamster',
+                'rabbit': 'Thỏ',
+                'turtle': 'Rùa',
+                'other': 'Khác'
+            };
+            return names[type] || 'Khác';
+        }
+
+        // Get gender display
+        function getGenderDisplay(gender) {
+            const genders = {
+                'male': '♂️ Đực',
+                'female': '♀️ Cái',
+                'unknown': '❓ Không rõ'
+            };
+            return genders[gender] || gender;
+        }
+
+        // Get health status display
+        function getHealthDisplay(status) {
+            const statuses = {
+                'normal': { text: 'Bình thường', color: 'bg-green-100 text-green-700', icon: '🟢' },
+                'mild': { text: 'Nhẹ', color: 'bg-yellow-100 text-yellow-700', icon: '🟡' },
+                'moderate': { text: 'Trung bình', color: 'bg-orange-100 text-orange-700', icon: '🟠' },
+                'severe': { text: 'Nặng', color: 'bg-red-100 text-red-700', icon: '🔴' }
+            };
+            return statuses[status] || { text: status, color: 'bg-gray-100 text-gray-700', icon: '⚪' };
+        }
+
+        // Display records
+        function displayRecords() {
+            const recordsList = document.getElementById('recordsList');
+            const recordCount = document.getElementById('recordCount');
+
+            recordCount.textContent = `${records.length} khách hàng`;
+
+            if (records.length === 0) {
+                recordsList.innerHTML = `
+                    <div class="text-center py-12 text-pink-400">
+                        <span class="text-6xl block mb-4">🐾</span>
+                        <p>Chưa có khách hàng nào được đăng ký</p>
+                    </div>
+                `;
+                return;
+            }
+
+            recordsList.innerHTML = records.map((record, index) => {
+                const health = getHealthDisplay(record.healthStatus);
+                return `
+                    <div class="table-row bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl p-5 border-2 border-pink-200 transition-all hover:shadow-lg">
+                        <div class="flex flex-wrap items-start justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="text-5xl">${getPetEmoji(record.petType)}</div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-pink-600">${record.petName}</h4>
+                                    <p class="text-purple-500 font-medium">${getPetTypeName(record.petType)} ${record.petBreed ? '- ' + record.petBreed : ''}</p>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        <span class="font-semibold">👤 Chủ:</span> ${record.ownerName}
+                                    </p>
+                                    <p class="text-sm text-gray-500">
+                                        <span class="font-semibold">📞</span> ${record.ownerPhone}
+                                        ${record.ownerAddress ? `<br><span class="font-semibold">📍</span> ${record.ownerAddress}` : ''}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                                    ${getGenderDisplay(record.petGender)}
+                                </span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                                    ⚖️ ${record.petWeight} kg
+                                </span>
+                                <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
+                                    📏 ${record.petHeight} cm
+                                </span>
+                                <span class="px-3 py-1 ${health.color} rounded-full text-sm font-medium">
+                                    ${health.icon} ${health.text}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-pink-200">
+                            <p class="text-sm text-gray-600">
+                                <strong class="text-pink-600">🩺 Triệu chứng:</strong> ${record.symptoms.length > 0 ? record.symptoms.join(', ') : 'Không có'}
+                            </p>
+                            ${record.symptomsDetail ? `<p class="text-sm text-gray-600 mt-1"><strong class="text-pink-600">📝 Chi tiết:</strong> ${record.symptomsDetail}</p>` : ''}
+                            ${record.medicalHistory ? `<p class="text-sm text-gray-600 mt-1"><strong class="text-pink-600">📋 Tiền sử:</strong> ${record.medicalHistory}</p>` : ''}
+                            <p class="text-xs text-gray-400 mt-2">📅 Đăng ký: ${record.registeredAt}</p>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <button onclick="deleteRecord(${index})" class="px-4 py-2 bg-red-100 text-red-600 rounded-full text-sm font-medium hover:bg-red-200 transition-all">
+                                🗑️ Xóa
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Delete record
+        function deleteRecord(index) {
+            if (confirm('Bạn có chắc muốn xóa khách hàng này?')) {
+                records.splice(index, 1);
+                localStorage.setItem('petRecords', JSON.stringify(records));
+                displayRecords();
+            }
+        }
+
+        // Clear all records
+        function clearAllRecords() {
+            if (records.length === 0) {
+                alert('Không có dữ liệu để xóa!');
+                return;
+            }
+            if (confirm('Bạn có chắc muốn xóa TẤT CẢ khách hàng? Hành động này không thể hoàn tác!')) {
+                records = [];
+                localStorage.setItem('petRecords', JSON.stringify(records));
+                displayRecords();
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('show');
+        }
+
+        // Form submission
+        document.getElementById('petForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get symptoms
+            const symptomsChecked = document.querySelectorAll('input[name="symptoms"]:checked');
+            const symptoms = Array.from(symptomsChecked).map(cb => cb.value);
+
+            // Validate at least one symptom
+            if (symptoms.length === 0) {
+                alert('Vui lòng chọn ít nhất một triệu chứng!');
+                return;
+            }
+
+            // Create record
+            const record = {
+                // Owner info
+                ownerName: document.getElementById('ownerName').value.trim(),
+                ownerPhone: document.getElementById('ownerPhone').value.trim(),
+                ownerAddress: document.getElementById('ownerAddress').value.trim(),
+                ownerEmail: document.getElementById('ownerEmail').value.trim(),
+                ownerNote: document.getElementById('ownerNote').value.trim(),
+                // Pet info
+                petName: document.getElementById('petName').value.trim(),
+                petType: document.getElementById('petType').value,
+                petBreed: document.getElementById('petBreed').value.trim(),
+                petGender: document.getElementById('petGender').value,
+                petWeight: document.getElementById('petWeight').value,
+                petHeight: document.getElementById('petHeight').value,
+                petAge: document.getElementById('petAge').value.trim(),
+                petColor: document.getElementById('petColor').value.trim(),
+                // Health info
+                healthStatus: document.getElementById('healthStatus').value,
+                symptoms: symptoms,
+                symptomsDetail: document.getElementById('symptomsDetail').value.trim(),
+                medicalHistory: document.getElementById('medicalHistory').value.trim(),
+                // Metadata
+                registeredAt: new Date().toLocaleString('vi-VN')
+            };
+
+            // Save to records
+            records.push(record);
+            localStorage.setItem('petRecords', JSON.stringify(records));
+
+            // Show success modal
+            document.getElementById('successModal').classList.add('show');
+
+            // Reset form
+            this.reset();
+        });
+
+        // Initialize
+        displayRecords();
+    </script>
+</body>
+</html>
